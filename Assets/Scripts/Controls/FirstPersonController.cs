@@ -6,9 +6,17 @@ public class FirstPersonController : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool canMove { get; private set;} = true;
+    private bool isSprinting => canSprint && Input.GetKey(sprintKey);
+
+    [Header("Functional Options")]
+    [SerializeField] private bool canSprint = true;
+
+    [Header("Controls")]
+    [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
 
     [Header("Movement Parameters")]
-    [SerializeField] private float walkSpeed = 3.0f;
+    [SerializeField] private float walkSpeed = 5.0f;
+    [SerializeField] private float sprintSpeed = 8.0f;
     [SerializeField] private float gravity = 30.0f;
 
     [Header("Look Parameters")]
@@ -37,25 +45,27 @@ public class FirstPersonController : MonoBehaviour
     {
         if(canMove)
         {
-            HandleMovement();
-            HandleMouseMovement();
-            ApplyFinalMovement();
+            HandleMovementInput();
+            HandleMouseLook();
+
+            ApplyFinalMovements();
         }
     }
-    private void HandleMovement() {
-        currentInput = new Vector2(walkSpeed * Input.GetAxis("Vertical"), walkSpeed * Input.GetAxis("Horizontal"));
+    private void HandleMovementInput() {
+        currentInput = new Vector2((isSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Vertical"), (isSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Horizontal"));
         float moveDirectionY = moveDirection.y;
         moveDirection = (transform.TransformDirection(Vector3.forward * currentInput.x) + transform.TransformDirection(Vector3.right * currentInput.y));
         moveDirection.y = moveDirectionY;
     }
-    private void HandleMouseMovement() {
+
+    private void HandleMouseLook() {
         rotationX -= Input.GetAxis("Mouse Y") * lockSpeedY;
         rotationX = Mathf.Clamp(rotationX, -upperLockLimit,lowerLockLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lockSpeedX,0);
 
     }
-    private void ApplyFinalMovement() {
+    private void ApplyFinalMovements() {
         if(!characterController.isGrounded)
         {
             moveDirection.y -= gravity * Time.deltaTime;
