@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using static Models;
 using UnityEngine;
 
-public class PlayerControllers : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private CharacterController characterController;
     private Inputs defaultInput;
@@ -21,11 +21,19 @@ public class PlayerControllers : MonoBehaviour
     public float viewClampYMin = -70;
     public float viewClampYMax = 80;
 
+    [Header("Gravity")]
+    public float gravityAmount;
+    public float gravityMin;
+    private float playerGravity;
+
+    public Vector3 jumpingForce;
+    private Vector3 jumpingForceVelocity;
 
     private void Awake() {
         defaultInput = new Inputs();
         defaultInput.Character.Movement.performed += e => inputMovement = e.ReadValue<Vector2>();        
         defaultInput.Character.View.performed += e => inputView = e.ReadValue<Vector2>();        
+        defaultInput.Character.Jump.performed += e => jump();
 
         defaultInput.Enable();
 
@@ -39,6 +47,7 @@ public class PlayerControllers : MonoBehaviour
     {
         CalculateView();
         CalculateMovement();
+        CalculateJump();
     }
 
     private void CalculateView()
@@ -61,7 +70,42 @@ public class PlayerControllers : MonoBehaviour
         var newMovementSpeed = new Vector3(horizontalSpeed, 0, verticalSpeed);
         newMovementSpeed = transform.TransformDirection(newMovementSpeed);
 
+        if (playerGravity > gravityMin && jumpingForce.y < 0.1f)
+        {
+            playerGravity -= gravityAmount * Time.deltaTime;
+        }
+
+
+        if (playerGravity < -1 && characterController.isGrounded)
+        {
+            playerGravity = -1;
+        }
+
+        if (jumpingForce.y > 0.1f)
+        {
+            playerGravity = 0;
+        }
+        newMovementSpeed.y += playerGravity;
+        newMovementSpeed += jumpingForce * Time.deltaTime;
+
         characterController.Move(newMovementSpeed);
     }
+
+    private void CalculateJump()
+    {
+        jumpingForce = Vector3.SmoothDamp(jumpingForce, Vector3.zero, ref jumpingForceVelocity, playerSettings.jumpingFalloff);
+    }
+
+    private void jump()
+    {
+        if (!characterController.isGrounded)
+        {
+            return;
+        }
+
+        //Jump
+        jumpingForce = Vector3.up * playerSettings.jumpingHeight;
+    }
+
 
 }

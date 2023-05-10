@@ -20,6 +20,10 @@ public static class Models
         [Range(0, 100)] public float walkingForwardSpeed;
         [Range(0, 100)] public float walkingBackwardSpeed;
         [Range(0, 100)] public float walkingStrafeSpeed;
+
+        [Header("Jumping")]
+        [Range(0, 20)] public float jumpingHeight;
+        [Range(0, 10)] public float jumpingFalloff;
     }
 
     #endregion
