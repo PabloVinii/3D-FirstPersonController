@@ -22,6 +22,7 @@ public class FirstPersonController : MonoBehaviour
 
     [Header("Movement Parameters")]
     [SerializeField] private float walkSpeed = 5.0f;
+    public float baseSpeed = 5f;
     [SerializeField] private float sprintSpeed = 8.0f;
     [SerializeField] private float crouchSpeed = 2.5f;
 
@@ -80,12 +81,16 @@ public class FirstPersonController : MonoBehaviour
             ApplyFinalMovements();
         }
     }
-    private void HandleMovementInput() {
-        currentInput = new Vector2((isCrouching ? crouchSpeed : isSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Vertical"), 
-            (isCrouching ? crouchSpeed : isSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Horizontal"));
+
+    private void HandleMovementInput()
+    {
+        float moveSpeed = isCrouching ? crouchSpeed : isSprinting ? sprintSpeed : walkSpeed;
         float moveDirectionY = moveDirection.y;
-        moveDirection = moveDirection.normalized * Mathf.Clamp(moveDirection.magnitude, 0, walkSpeed);
-        moveDirection = (transform.TransformDirection(Vector3.forward * currentInput.x) + transform.TransformDirection(Vector3.right * currentInput.y));
+
+        Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
+        moveInput = transform.TransformDirection(moveInput) * moveSpeed;
+
+        moveDirection = moveInput;
         moveDirection.y = moveDirectionY;
     }
 
