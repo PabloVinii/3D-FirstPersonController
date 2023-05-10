@@ -7,7 +7,7 @@ public class FirstPersonController : MonoBehaviour
     // Start is called before the first frame update
     public bool canMove { get; private set;} = true;
     private bool isSprinting => canSprint && Input.GetKey(sprintKey);
-    private bool shouldJump => Input.GetKeyDown(jumKey) && characterController.isGrounded;
+    private bool shouldJump => Input.GetKeyDown(jumpKey) && characterController.isGrounded;
     private bool shouldCrouch => (Input.GetKeyDown(crouchKey)||Input.GetKeyUp(crouchKey)) && !duringCrouchAnimation && characterController.isGrounded;
 
     [Header("Functional Options")]
@@ -17,12 +17,11 @@ public class FirstPersonController : MonoBehaviour
 
     [Header("Controls")]
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
-    [SerializeField] private KeyCode jumKey = KeyCode.Space;
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode crouchKey = KeyCode.LeftControl;
 
     [Header("Movement Parameters")]
     [SerializeField] private float walkSpeed = 5.0f;
-    public float baseSpeed = 5f;
     [SerializeField] private float sprintSpeed = 8.0f;
     [SerializeField] private float crouchSpeed = 2.5f;
 
