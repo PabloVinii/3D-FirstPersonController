@@ -8,7 +8,7 @@ public class FirstPersonController : MonoBehaviour
     public bool canMove { get; private set;} = true;
     private bool isSprinting => canSprint && Input.GetKey(sprintKey);
     private bool shouldJump => Input.GetKeyDown(jumKey) && characterController.isGrounded;
-    private bool shouldCrouch => Input.GetKeyDown(crouchKey) && !duringCrouchAnimation && characterController.isGrounded;
+    private bool shouldCrouch => (Input.GetKeyDown(crouchKey)||Input.GetKeyUp(crouchKey)) && !duringCrouchAnimation && characterController.isGrounded;
 
     [Header("Functional Options")]
     [SerializeField] private bool canSprint = true;
@@ -145,6 +145,7 @@ public class FirstPersonController : MonoBehaviour
         Vector3 targetCenter = isCrouching ? standingCenter : crouchingCenter;
         Vector3 currentCenter = characterController.center;
 
+        isCrouching = !isCrouching;
         while (timeElapsed < timeToCrounch)
         {
             characterController.height = Mathf.Lerp(currentHeight, targetHeight, timeElapsed/timeToCrounch);
@@ -155,8 +156,8 @@ public class FirstPersonController : MonoBehaviour
         characterController.height = targetHeight;
         characterController.center = targetCenter;
 
-        isCrouching = !isCrouching;
-
         duringCrouchAnimation = false;
+        canJump = !canJump;
+        canSprint = !canSprint; 
     }
 }
