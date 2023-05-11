@@ -185,6 +185,37 @@ LightingSettings:
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
   m_PVRTiledBaking: 0
+--- !u!1 &148498378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 148498379}
+  m_Layer: 10
+  m_Name: FeetTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &148498379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148498378}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1892717913}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &220303213
 GameObject:
   m_ObjectHideFlags: 0
@@ -28840,7 +28871,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28706
+  m_Name: pb_Mesh34138
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -29174,7 +29205,7 @@ GameObject:
   - component: {fileID: 1695447908}
   - component: {fileID: 1695447907}
   - component: {fileID: 1695447906}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32451,7 +32482,7 @@ GameObject:
   - component: {fileID: 1892717915}
   - component: {fileID: 1892717909}
   - component: {fileID: 1892717914}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32548,11 +32579,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892717907}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.109, y: 1.01, z: 5.22}
+  m_LocalPosition: {x: 1.109, y: 1.01, z: 3.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2119750285}
+  - {fileID: 148498379}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -32568,9 +32600,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6b27ff6a132b94bb0a546a15a17062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputMovement: {x: 0, y: 0}
-  inputView: {x: 0, y: 0}
   cameraHolder: {fileID: 2119750285}
+  feetTransform: {fileID: 148498379}
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 55
   playerSettings:
     viewXSensitivity: 12
     viewYSensitivity: 12
@@ -32583,7 +32617,7 @@ MonoBehaviour:
     jumpingFalloff: 0.4
   viewClampYMin: -70
   viewClampYMax: 80
-  gravityAmount: 0.05
+  gravityAmount: 0.03
   gravityMin: -3
   jumpingForce: {x: 0, y: 0, z: 0}
   playerStance: 0
@@ -66885,7 +66919,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2119750285}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CameraHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
