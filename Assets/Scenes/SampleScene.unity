@@ -275,7 +275,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 220303213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.4, y: 2.2, z: 6.91}
+  m_LocalPosition: {x: 2.965, y: 2.2, z: 6.91}
   m_LocalScale: {x: 2.0695, y: 1.6059419, z: 2.0695}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13124,7 +13124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776394785}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.84, y: 0.56, z: 6.91}
+  m_LocalPosition: {x: 0.84, y: 1.596, z: 6.91}
   m_LocalScale: {x: 2.0695, y: 1.6059419, z: 2.0695}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32447,6 +32447,8 @@ GameObject:
   - component: {fileID: 1892717912}
   - component: {fileID: 1892717911}
   - component: {fileID: 1892717910}
+  - component: {fileID: 1892717916}
+  - component: {fileID: 1892717915}
   - component: {fileID: 1892717909}
   - component: {fileID: 1892717914}
   m_Layer: 0
@@ -32468,7 +32470,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -32483,8 +32485,8 @@ CapsuleCollider:
   m_GameObject: {fileID: 1892717907}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
+  m_Enabled: 0
+  m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -32546,7 +32548,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892717907}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.06, y: 1.08, z: 3.47}
+  m_LocalPosition: {x: 1.109, y: 1.01, z: 5.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32586,9 +32588,43 @@ MonoBehaviour:
   jumpingForce: {x: 0, y: 0, z: 0}
   playerStance: 0
   playerStanceSmoothing: 0.3
-  cameraStandHeight: 0.28
-  cameraCrouchHeight: -0.7
-  cameraProneHeight: -1.3
+  playerStandStance:
+    cameraHeight: 0.28
+    stanceCollider: {fileID: 1892717910}
+  playerCrouchStance:
+    cameraHeight: -0.7
+    stanceCollider: {fileID: 1892717916}
+  playerProneStance:
+    cameraHeight: -1.3
+    stanceCollider: {fileID: 1892717915}
+--- !u!136 &1892717915
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892717907}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.3
+  m_Height: 0.5
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.7, z: 0}
+--- !u!136 &1892717916
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892717907}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.3
+  m_Height: 1.2
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.4, z: 0}
 --- !u!43 &1960448147
 Mesh:
   m_ObjectHideFlags: 0
