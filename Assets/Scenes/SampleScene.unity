@@ -32617,7 +32617,7 @@ MonoBehaviour:
     runningStrafeSpeed: 8
     sprintingHold: 1
     movementSmoothing: 0.05
-    jumpingHeight: 3
+    jumpingHeight: 8
     jumpingFalloff: 0.4
     fallingSmoothing: 0.1
     speedEffector: 1

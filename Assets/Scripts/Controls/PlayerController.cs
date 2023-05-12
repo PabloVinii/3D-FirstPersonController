@@ -55,10 +55,10 @@ public class PlayerController : MonoBehaviour
         defaultInput = new Inputs();
         defaultInput.Character.Movement.performed += e => inputMovement = e.ReadValue<Vector2>();        
         defaultInput.Character.View.performed += e => inputView = e.ReadValue<Vector2>();        
-        defaultInput.Character.Jump.performed += e => jump();
+        defaultInput.Character.Jump.performed += e => Jump();
         defaultInput.Character.Crouch.performed += e => Crouch();
         defaultInput.Character.Prone.performed += e => Prone();
-        defaultInput.Character.Sprint.performed += e => IsSprinting();
+        defaultInput.Character.Sprint.performed += e => ToggleSprinting();
         defaultInput.Character.SprintReleased.performed += e => StopSprinting();
 
         defaultInput.Enable();
@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void jump()
+    private void Jump()
     {
         if (!characterController.isGrounded || playerStance == PlayerStance.Prone)
         {
@@ -195,7 +195,9 @@ public class PlayerController : MonoBehaviour
 
         if (playerStance == PlayerStance.Crouch)
         {
-            if (StanceCheck(playerStandStance.stanceCollider.height))
+            float standHeight = playerStandStance.stanceCollider.height;
+
+            if (CanChangeStanceToStand(standHeight))
             {
                 return;
             }
@@ -204,7 +206,21 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        //Jump
+        ApplyJumpingForce();
+    }
+
+    private bool CanChangeStanceToStand(float standHeight)
+    {
+        if (StanceCheck(standHeight))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void ApplyJumpingForce()
+    {
         jumpingForce = Vector3.up * playerSettings.jumpingHeight;
         playerGravity = 0;
     }
@@ -213,21 +229,29 @@ public class PlayerController : MonoBehaviour
     {
         if (playerStance == PlayerStance.Crouch)
         {
-            if (StanceCheck(playerStandStance.stanceCollider.height))
+            float standHeight = playerStandStance.stanceCollider.height;
+
+            if (CanChangeStanceToStand(standHeight))
             {
                 return;
             }
+
             playerStance = PlayerStance.Stand;
             return;
         }
+        else
+        {
+            float crouchHeight = playerCrouchStance.stanceCollider.height;
 
-        if (StanceCheck(playerCrouchStance.stanceCollider.height))
+            if (CanChangeStanceToStand(crouchHeight))
             {
                 return;
             }
-            
-        playerStance = PlayerStance.Crouch;
+
+            playerStance = PlayerStance.Crouch;
+        }
     }
+
 
     private void Prone()
     {
@@ -236,15 +260,16 @@ public class PlayerController : MonoBehaviour
 
     private bool StanceCheck(float stanceCheckHeight)
     {
-        var start = new Vector3(feetTransform.position.x, feetTransform.position.y + characterController.radius + stanceCheckErrorMargin, feetTransform.position.z);
-        var end = new Vector3(feetTransform.position.x, feetTransform.position.y - characterController.radius - stanceCheckErrorMargin + stanceCheckHeight, feetTransform.position.z);
+        // Define os pontos de início e fim da cápsula de verificação de colisão
+        Vector3 capsuleStart = new Vector3(feetTransform.position.x, feetTransform.position.y + characterController.radius + stanceCheckErrorMargin, feetTransform.position.z);
+        Vector3 capsuleEnd = new Vector3(feetTransform.position.x, feetTransform.position.y - characterController.radius - stanceCheckErrorMargin + stanceCheckHeight, feetTransform.position.z);
 
-
-
-        return Physics.CheckCapsule(start, end, characterController.radius, playerMask);
+        // Realiza a verificação de colisão usando uma cápsula
+        return Physics.CheckCapsule(capsuleStart, capsuleEnd, characterController.radius, playerMask);
     }
 
-    private void IsSprinting()
+
+    private void ToggleSprinting()
     {
         if (inputMovement.y <= 0.2f)
         {
@@ -257,11 +282,11 @@ public class PlayerController : MonoBehaviour
 
     private void StopSprinting()
     {
-        if (playerSettings.sprintingHold)
+        // Verifica se a configuração de sprint contínuo está desativada
+        if (!playerSettings.sprintingHold)
         {
             isSprinting = false;        
         }
-
     }
 
 }
