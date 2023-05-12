@@ -82,15 +82,20 @@ public class PlayerController : MonoBehaviour
 
     private void CalculateView()
     {
-        newCharacterRotation.y += playerSettings.viewXSensitivity * (playerSettings.ViewXInverted ? -inputView.x : inputView.x) * Time.deltaTime;
-        transform.localRotation = Quaternion.Euler(newCharacterRotation);
+        // Inversão das entradas
+        float invertX = playerSettings.ViewXInverted ? -1f : 1f;
+        float invertY = playerSettings.ViewYInverted ? 1f : -1f;
 
-        newCameraRotation.x += playerSettings.viewYSensitivity * (playerSettings.ViewYInverted ? inputView.y : -inputView.y) * Time.deltaTime;
+        // Rotação do personagem apenas no eixo Y
+        newCharacterRotation.y += playerSettings.viewXSensitivity * invertX * inputView.x * Time.fixedDeltaTime;
+        transform.rotation = Quaternion.Euler(0f, newCharacterRotation.y, 0f);
+
+        // Rotação da câmera no eixo X com limite
+        newCameraRotation.x += playerSettings.viewYSensitivity * invertY * inputView.y * Time.fixedDeltaTime;
         newCameraRotation.x = Mathf.Clamp(newCameraRotation.x, viewClampYMin, viewClampYMax);
-
         cameraHolder.localRotation = Quaternion.Euler(newCameraRotation);
-        
     }
+
 
     private void CalculateMovement()
     {

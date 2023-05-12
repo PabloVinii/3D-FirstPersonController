@@ -32606,8 +32606,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   playerSettings:
-    viewXSensitivity: 14
-    viewYSensitivity: 14
+    viewXSensitivity: 5
+    viewYSensitivity: 5
     ViewXInverted: 0
     ViewYInverted: 0
     walkingForwardSpeed: 5

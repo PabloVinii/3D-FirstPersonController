@@ -42,10 +42,10 @@ public static class Models
         public float fallingSmoothing;
 
         [Header("Speed Effectors")]
-        public float speedEffector = 1;
-        public float crouchSpeedEffector;
-        public float proneSpeedEffector;
-        public float FallingSpeedEffector;
+        [Range(0, 5)] public float speedEffector = 1;
+        [Range(0, 5)] public float crouchSpeedEffector;
+        [Range(0, 5)] public float proneSpeedEffector;
+        [Range(0, 5)] public float FallingSpeedEffector;
     }
 
     [Serializable]
