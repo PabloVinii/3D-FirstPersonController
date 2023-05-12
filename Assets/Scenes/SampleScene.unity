@@ -32613,6 +32613,8 @@ MonoBehaviour:
     walkingForwardSpeed: 5
     walkingBackwardSpeed: 5
     walkingStrafeSpeed: 5
+    runningForwardSpeed: 10
+    runningStrafeSpeed: 10
     jumpingHeight: 7
     jumpingFalloff: 0.4
   viewClampYMin: -70

@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 stanceCapsuleCenterVelocity;
     private float stanceCapsuleHeightVelocity;
 
+    private bool isSprinting;
+
     private void Awake() {
         defaultInput = new Inputs();
         defaultInput.Character.Movement.performed += e => inputMovement = e.ReadValue<Vector2>();        
@@ -53,6 +55,7 @@ public class PlayerController : MonoBehaviour
         defaultInput.Character.Jump.performed += e => jump();
         defaultInput.Character.Crouch.performed += e => Crouch();
         defaultInput.Character.Prone.performed += e => Prone();
+        defaultInput.Character.Sprint.performed += e => IsSprinting();
 
         defaultInput.Enable();
 
@@ -87,10 +90,21 @@ public class PlayerController : MonoBehaviour
 
     private void CalculateMovement()
     {
-        var verticalSpeed = playerSettings.walkingForwardSpeed * inputMovement.y * Time.deltaTime;
-        var horizontalSpeed = playerSettings.walkingStrafeSpeed * inputMovement.x * Time.deltaTime;
+        if (inputMovement.y <= 0.2f)
+        {
+            isSprinting = false;
+        }
+    
+        var verticalSpeed = playerSettings.walkingForwardSpeed;
+        var horizontalSpeed = playerSettings.walkingStrafeSpeed;
 
-        var newMovementSpeed = new Vector3(horizontalSpeed, 0, verticalSpeed);
+        if (isSprinting)
+        {
+            verticalSpeed = playerSettings.runningForwardSpeed;
+            horizontalSpeed = playerSettings.runningStrafeSpeed;
+        }
+
+        var newMovementSpeed = new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime);
         newMovementSpeed = transform.TransformDirection(newMovementSpeed);
 
         if (playerGravity > gravityMin)
@@ -137,8 +151,14 @@ public class PlayerController : MonoBehaviour
 
     private void jump()
     {
-        if (!characterController.isGrounded)
+        if (!characterController.isGrounded || playerStance == PlayerStance.Prone)
         {
+            return;
+        }
+
+        if (playerStance == PlayerStance.Crouch)
+        {
+            playerStance = PlayerStance.Stand;
             return;
         }
 
@@ -180,6 +200,17 @@ public class PlayerController : MonoBehaviour
 
 
         return Physics.CheckCapsule(start, end, characterController.radius, playerMask);
+    }
+
+    private void IsSprinting()
+    {
+        if (inputMovement.y <= 0.2f)
+        {
+            isSprinting = false;
+            return;
+        }
+
+        isSprinting = !isSprinting;
     }
 
 }
