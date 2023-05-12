@@ -39,6 +39,13 @@ public static class Models
         [Header("Jumping")]
         [Range(0, 20)] public float jumpingHeight;
         [Range(0, 10)] public float jumpingFalloff;
+        public float fallingSmoothing;
+
+        [Header("Speed Effectors")]
+        public float speedEffector = 1;
+        public float crouchSpeedEffector;
+        public float proneSpeedEffector;
+        public float FallingSpeedEffector;
     }
 
     [Serializable]

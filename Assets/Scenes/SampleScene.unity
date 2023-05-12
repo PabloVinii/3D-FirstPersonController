@@ -32579,7 +32579,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892717907}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.109, y: 1.01, z: 3.86}
+  m_LocalPosition: {x: 1.109, y: 2.46, z: 3.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32619,6 +32619,11 @@ MonoBehaviour:
     movementSmoothing: 0.05
     jumpingHeight: 7
     jumpingFalloff: 0.4
+    fallingSmoothing: 0.1
+    speedEffector: 1
+    crouchSpeedEffector: 0.6
+    proneSpeedEffector: 0.2
+    FallingSpeedEffector: 0.8
   viewClampYMin: -70
   viewClampYMax: 80
   gravityAmount: 0.03
