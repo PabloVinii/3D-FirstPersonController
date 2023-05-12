@@ -13866,7 +13866,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28548
+  m_Name: pb_Mesh28552
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -32617,7 +32617,7 @@ MonoBehaviour:
     runningStrafeSpeed: 8
     sprintingHold: 1
     movementSmoothing: 0.05
-    jumpingHeight: 7
+    jumpingHeight: 3
     jumpingFalloff: 0.4
     fallingSmoothing: 0.1
     speedEffector: 1
@@ -32630,7 +32630,7 @@ MonoBehaviour:
   gravityMin: -3
   jumpingForce: {x: 0, y: 0, z: 0}
   playerStance: 0
-  playerStanceSmoothing: 0.3
+  playerStanceSmoothing: 0.2
   playerStandStance:
     cameraHeight: 0.28
     stanceCollider: {fileID: 1892717910}

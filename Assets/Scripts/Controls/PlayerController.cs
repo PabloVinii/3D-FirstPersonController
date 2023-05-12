@@ -162,22 +162,29 @@ public class PlayerController : MonoBehaviour
 
     private void CalculateStance()
     {
-        var currentStance = playerStandStance;
+        Dictionary<PlayerStance, CharacterStance> stanceDictionary = new Dictionary<PlayerStance, CharacterStance>()
+        {
+            { PlayerStance.Stand, playerStandStance },
+            { PlayerStance.Crouch, playerCrouchStance },
+            { PlayerStance.Prone, playerProneStance }
+        };
 
-        if (playerStance == PlayerStance.Crouch)
-        {
-            currentStance = playerCrouchStance;
-        }
-        else if (playerStance == PlayerStance.Prone)
-        {
-            currentStance = playerProneStance;
-        }
-        cameraHeight = Mathf.SmoothDamp(cameraHolder.localPosition.y, currentStance.cameraHeight, ref cameraHeightVelocity, playerStanceSmoothing);
+        CharacterStance targetStance = stanceDictionary[playerStance];
+
+        // Suavização da altura da câmera
+        cameraHeight = Mathf.SmoothDamp(cameraHolder.localPosition.y, targetStance.cameraHeight, ref cameraHeightVelocity, playerStanceSmoothing);
         cameraHolder.localPosition = new Vector3(cameraHolder.localPosition.x, cameraHeight, cameraHolder.localPosition.z);
-    
-        characterController.height = Mathf.SmoothDamp(characterController.height, currentStance.stanceCollider.height, ref stanceCapsuleHeightVelocity, playerStanceSmoothing);
-        characterController.center = Vector3.SmoothDamp(characterController.center, currentStance.stanceCollider.center, ref stanceCapsuleCenterVelocity, playerStanceSmoothing);
+
+        // Suavização da altura e centro do CharacterController
+        SmoothDampCharacterControllerHeight(targetStance.stanceCollider.height, targetStance.stanceCollider.center);
     }
+
+    private void SmoothDampCharacterControllerHeight(float targetHeight, Vector3 targetCenter)
+    {
+        characterController.height = Mathf.SmoothDamp(characterController.height, targetHeight, ref stanceCapsuleHeightVelocity, playerStanceSmoothing);
+        characterController.center = Vector3.SmoothDamp(characterController.center, targetCenter, ref stanceCapsuleCenterVelocity, playerStanceSmoothing);
+    }
+
 
     private void jump()
     {
