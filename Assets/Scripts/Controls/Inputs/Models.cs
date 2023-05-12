@@ -32,6 +32,10 @@ public static class Models
         [Range(0, 100)] public float runningForwardSpeed;
         [Range(0, 100)] public float runningStrafeSpeed;
 
+        [Header("Movement Settings")]
+        public bool sprintingHold;
+        public float movementSmoothing;
+
         [Header("Jumping")]
         [Range(0, 20)] public float jumpingHeight;
         [Range(0, 10)] public float jumpingFalloff;

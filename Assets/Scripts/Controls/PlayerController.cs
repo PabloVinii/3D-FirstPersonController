@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviour
 
     private bool isSprinting;
 
+    private Vector3 newMovementSpeed;
+    private Vector3 newMovementSpeedVelocity;
+
     private void Awake() {
         defaultInput = new Inputs();
         defaultInput.Character.Movement.performed += e => inputMovement = e.ReadValue<Vector2>();        
@@ -56,6 +59,7 @@ public class PlayerController : MonoBehaviour
         defaultInput.Character.Crouch.performed += e => Crouch();
         defaultInput.Character.Prone.performed += e => Prone();
         defaultInput.Character.Sprint.performed += e => IsSprinting();
+        defaultInput.Character.SprintReleased.performed += e => StopSprinting();
 
         defaultInput.Enable();
 
@@ -104,8 +108,9 @@ public class PlayerController : MonoBehaviour
             horizontalSpeed = playerSettings.runningStrafeSpeed;
         }
 
-        var newMovementSpeed = new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime);
-        newMovementSpeed = transform.TransformDirection(newMovementSpeed);
+        newMovementSpeed = Vector3.SmoothDamp(newMovementSpeed, new Vector3(horizontalSpeed * inputMovement.x * Time.deltaTime, 0, verticalSpeed * inputMovement.y * Time.deltaTime), 
+            ref newMovementSpeedVelocity, playerSettings.movementSmoothing);
+        var movementSpeed = transform.TransformDirection(newMovementSpeed);
 
         if (playerGravity > gravityMin)
         {
@@ -119,10 +124,10 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        newMovementSpeed.y += playerGravity;
-        newMovementSpeed += jumpingForce * Time.deltaTime;
+        movementSpeed.y += playerGravity;
+        movementSpeed += jumpingForce * Time.deltaTime;
 
-        characterController.Move(newMovementSpeed);
+        characterController.Move(movementSpeed);
     }
 
     private void CalculateJump()
@@ -211,6 +216,15 @@ public class PlayerController : MonoBehaviour
         }
 
         isSprinting = !isSprinting;
+    }
+
+    private void StopSprinting()
+    {
+        if (playerSettings.sprintingHold)
+        {
+            isSprinting = false;        
+        }
+
     }
 
 }
